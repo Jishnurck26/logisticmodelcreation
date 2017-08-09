@@ -3508,9 +3508,9 @@ if (interactive()) {
           save( information_value,p_value,Plot_data_varclus,glmmodel , vif_table,
                 rank_order_development, model_stat,chi_sq,chi_sq_calculation, concordance_dev,beta_ratio_table_val,
                 rank_order_validation, comparison_table,concordance_val,
-                beta_ratio_table_holdout, rank_order_holdout, comparison_table_holdout,concordance_holdout,
+                beta_ratio_table_holdout, rank_order_holdout, comparison_table_holdout,concordance_holdout,documentation,
                 file = file)
-          write.table(documentation,file="documentation.txt")
+          #write.table(documentation,file="documentation.txt")
           #plotly_IMAGE(patientCircleInput(), format = "png", out_file = file)
         }
       )
