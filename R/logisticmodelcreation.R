@@ -3489,12 +3489,12 @@ if (interactive()) {
       observe({
         if(is.null(docummnt1()))
           isolate(
-            docummnt <<- NULL
+            documentation <<- NULL
           )
 
         if(!is.null(docummnt1()))
           isolate(
-            docummnt <<- docummnt1()
+            documentation <<- docummnt1()
           )
       })
 
@@ -3510,7 +3510,7 @@ if (interactive()) {
                 rank_order_validation, comparison_table,concordance_val,
                 beta_ratio_table_holdout, rank_order_holdout, comparison_table_holdout,concordance_holdout,
                 file = file)
-          write.table(docummnt,file="documentation.txt")
+          write.table(documentation,file="documentation.txt")
           #plotly_IMAGE(patientCircleInput(), format = "png", out_file = file)
         }
       )
