@@ -375,7 +375,7 @@ if (interactive()) {
                column(
                  4,
                  selectInput(
-                   label = "Select Validation Dataframe",
+                   label = "Select Holdout Dataframe",
                    choices = m$names.x...x....TRUE..,
                    selected = "m",
                    inputId = "Holdout"
@@ -492,7 +492,7 @@ if (interactive()) {
       out_factore <-
         reactive({
           #for reactive factore output based on selected object
-          if (input$Table2=="m")
+          if (is.null(input$Table2) || input$Table2=="m")
             return(NULL)
           op <- data.frame(get((input$Table2)))
           j <- data.frame(names(Filter(is.factor, op)))
@@ -521,7 +521,7 @@ if (interactive()) {
       out_numeric_3567<-
         reactive({
           #for reactive numeric output based on selected object
-          if (input$Table2=="m")
+          if (is.null(input$Table2) || input$Table2=="m")
             return(NULL)
           op <- data.frame(get((input$Table2)))
           dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
@@ -549,7 +549,7 @@ if (interactive()) {
       out_all <-
         reactive({
           #for reactive all output based on selected object
-          if (input$Table2=="m")
+          if (is.null(input$Table2) || input$Table2=="m")
             return(NULL)
           op <- data.frame(get((input$Table2)))
           j <- data.frame(names(op))
@@ -827,7 +827,7 @@ if (interactive()) {
       out_factore266 <-
         reactive({
           #for reactive factore output based on selected object
-          if (input$Table266=="m")
+          if (is.null(input$Table266) || input$Table266=="m")
             return(NULL)
           op <- data.frame(get((input$Table266)))
           j <- data.frame(names(op))
@@ -850,7 +850,7 @@ if (interactive()) {
       out_numeric266 <-
         reactive({
           #for reactive numeric output based on selected object
-          if (input$Table266=="m")
+          if (is.null(input$Table266) || input$Table266=="m")
             return(NULL)
           op <- data.frame(get((input$Table266)))
           j <- data.frame(names(op))
@@ -875,7 +875,7 @@ if (interactive()) {
       out_all266 <-
         reactive({
           #for reactive all output based on selected object
-          if (input$Table266=="m")
+          if (is.null(input$Table266) || input$Table266=="m")
             return(NULL)
           op <- data.frame(get((input$Table266)))
           j <- data.frame(names(op))
@@ -3506,7 +3506,7 @@ if (interactive()) {
 
         content = function(file) {
           save( information_value,p_value,Plot_data_varclus,glmmodel , vif_table,
-                rank_order_development, model_stat,chi_sq,chi_sq_calculation, concordance_dev,beta_ratio_table,
+                rank_order_development, model_stat,chi_sq,chi_sq_calculation, concordance_dev,beta_ratio_table_val,
                 rank_order_validation, comparison_table,concordance_val,
                 beta_ratio_table_holdout, rank_order_holdout, comparison_table_holdout,concordance_holdout,
                 file = file)
