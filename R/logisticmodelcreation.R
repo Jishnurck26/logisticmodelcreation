@@ -40,6 +40,7 @@ logisticmodelcreation<-function (var)
   library(pryr)
   library(scales)
   library(shinythemes)
+  library(plotly)
   m = var
 if (interactive()) {
   ui <-navbarPage(
@@ -91,7 +92,8 @@ if (interactive()) {
             choices = c(
               `Factor / Character Variable` = "fac987",
               `Numeric Variable` = "nam987"
-            )
+            ),
+            selected = "nam987"
           ),
           actionButton("analysis",
                        "Get Analysis")
@@ -120,7 +122,8 @@ if (interactive()) {
                  numericInput("maxlvl", "Max. Permissible Levels", 10, min = 1, max = 100),
                  uiOutput("ID"),
                  uiOutput("Target"),
-                 actionButton("ivv", "Get Information Value ")
+                 uiOutput("ivv")
+                 #actionButton("ivv", "Get Information Value ")
                ),
                column(6,
                       DT::dataTableOutput("ivvalue"))
@@ -132,7 +135,8 @@ if (interactive()) {
                  4,
                  uiOutput("IDp"),
                  uiOutput("Targetp"),
-                 actionButton("pv", "Get p Value ")
+                 uiOutput("pv")
+                 # actionButton("pv", "Get p Value ")
                ),
 
                column(7,
@@ -168,8 +172,9 @@ if (interactive()) {
             choiceValues = NULL
           ),
           uiOutput("all"),
-          actionButton("plot",
-                       "Click for plot"))
+          # actionButton("plot",
+          #              "Click for plot")
+          uiOutput("plot"))
 
 
         ,
@@ -218,12 +223,52 @@ if (interactive()) {
         titlePanel("Variable Clustering"),
         column(2,
                uiOutput("IDpx"),
-               actionButton("vc", "Get Graph ")),
+               uiOutput("vc")
+              # actionButton("vc", "Get Graph ")
+              ),
 
         column(12,
                plotOutput("clusterplot"))
       )
     ),
+
+
+
+    tabPanel(
+      "Variable Updation/Creation",
+      fluidPage(
+        titlePanel("Variable Updation/Creation"),
+        column(4,
+               textAreaInput(
+                 label = "variable Updation",
+                 value = "If you want to update any vaeriable please type a valid  syntax. Example
+                 dataframe<<-expression",
+                 inputId = "variableupdation",
+                 width = "300px",height = "130px",
+                 cols = NULL, rows = NULL, placeholder = NULL, resize = NULL
+               ),
+               textOutput("typed"),
+               actionButton("updatevardev", "Execute on data")
+               # ,helpText(
+               #   "Updated datafrmaes will be available on new_df_dev"
+               # ),
+               # actionButton("updatevarval", "Execute on val"),
+               # helpText(
+               #   "Updated datafrmaes will be available on new_df_val"
+               # ),
+               # actionButton("updatevarhold", "Execute on holdout"),
+               # helpText(
+               #   "Updated datafrmaes will be available on new_df_holdout"
+               # )
+
+        ),
+
+        column(8,
+               textOutput("updatedout"))
+      )
+    ),
+
+
 
     tabPanel("Development Model",
              fluidPage(
@@ -234,14 +279,15 @@ if (interactive()) {
                  # actionButton("colnm",
                  #              "Get Column names"),
                  absolutePanel(
-                   textInput(
+                   textAreaInput(
                      label = "Formula",
                      value = "TARGET~AGE+OCCUPATION+GENDER",
                      inputId = "equation",
-                     width = "300px"
+                     width = "300px",height = "100px",
+                     cols = NULL, rows = NULL, placeholder = NULL, resize = NULL
                    ),
-                   actionButton("getmodel",
-                                "Create Model")
+                   uiOutput("getmodel")
+                   #actionButton("getmodel","Create Model")
                  ),
                  absolutePanel(
                    wellPanel(id = "tPanel", style = "overflow-y:scroll; max-height: 300px",
@@ -273,8 +319,8 @@ if (interactive()) {
                titlePanel("Rank Ordering"),
                column(
                  4,
-                 actionButton("Rankord",
-                              "Get Rank Ordering Table"),
+                 uiOutput("Rankord"),
+                 # actionButton("Rankord",                              "Get Rank Ordering Table"),
                  DT::dataTableOutput("Rankordering")
                )
              )),
@@ -283,11 +329,11 @@ if (interactive()) {
                titlePanel("All Measures"),
                column(
                  2,
-                 actionButton("measure",
-                              "Get All measure"),
+                 uiOutput("measure"),
+                 #actionButton("measure",                "Get All measure"),
                  helpText("Concordance will take time to show the output for large datasets."),
-                 actionButton("concob",
-                              "Get Concordance")
+                 uiOutput("concob")
+                 # actionButton("concob",          "Get Concordance")
                ),
                column(
                  5,
@@ -317,7 +363,8 @@ if (interactive()) {
                    selected = "m",
                    inputId = "val"
                  ),
-                 actionButton("validate", "Validate the model "),
+                 uiOutput("validate"),
+                 #actionButton("validate", "Validate the model "),
                  helpText("Equation used for the model creation"),
                  textOutput("eqnused")
                ),
@@ -336,8 +383,8 @@ if (interactive()) {
                titlePanel("Validation Rank Ordering"),
                column(
                  4,
-                 actionButton("Rankordv",
-                              "Get Rank Ordering Table"),
+                 uiOutput("Rankordv"),
+                 #actionButton("Rankordv",                              "Get Rank Ordering Table"),
                  DT::dataTableOutput("Rankorderingv")
                )
              )),
@@ -347,11 +394,11 @@ if (interactive()) {
         titlePanel("Comparison Dev Vs Val"),
         column(
           2,
-          actionButton("Compr",
-                       "Get Comparison"),
+          uiOutput("Compr"),
+          # actionButton("Compr",                       "Get Comparison"),
           helpText("Concordance will take time to show the out put for large datasets"),
-          actionButton("Comprconc",
-                       "Get Comparison Concordance")
+          uiOutput("Comprconc")
+          # actionButton("Comprconc",                       "Get Comparison Concordance")
         ),
         column(4,
                absolutePanel(
@@ -380,7 +427,9 @@ if (interactive()) {
                    selected = "m",
                    inputId = "Holdout"
                  ),
-                 actionButton("validateholdout", "Validate the model "),
+
+                 uiOutput("validateholdout"),
+                 # actionButton("validateholdout", "Validate the model "),
                  helpText("Equation used for the model creation"),
                  textOutput("eqnused123")
                ),
@@ -400,8 +449,8 @@ if (interactive()) {
                titlePanel("Validation Rank Ordering"),
                column(
                  4,
-                 actionButton("Rankordh",
-                              "Get Rank Ordering Table"),
+                 uiOutput("Rankordh"),
+                 #actionButton("Rankordh",                              "Get Rank Ordering Table"),
                  DT::dataTableOutput("Rankorderingh")
                )
              )),
@@ -411,11 +460,13 @@ if (interactive()) {
         titlePanel("Comparison Dev Vs Val Vs Holdout"),
         column(
           2,
-          actionButton("Comprvh",
-                       "Get Comparison"),
+          uiOutput("Comprvh"),
+          # actionButton("Comprvh",
+          #              "Get Comparison"),
           helpText("Concordance will take time to show the out put for large datasets"),
-          actionButton("Comprconcvh",
-                       "Get Comparison Concordance")
+          uiOutput("Comprconcvh")
+          # actionButton("Comprconcvh",
+          #              "Get Comparison Concordance")
         ),
         column(4,
                absolutePanel(
@@ -447,8 +498,8 @@ if (interactive()) {
                                     width = "500px", height = "300px",
                                     cols = NULL, rows = NULL, placeholder = NULL, resize = NULL),
                       #downloadButton('savedisc', 'Save Discription'),
-                      helpText("Download All the objects (from P_value) created with documentation"),
-                      downloadButton('downloadData', 'Download All  Objects')
+                      helpText("Download  the objects (P_value,Information value,Model Rankordering tables & Comparison tables ) created with documentation"),
+                      downloadButton('downloadData', 'Download   Objects')
                       #, helpText("Performance Measures includes Rank order tables both validation and development
                       #          , comparision table, Information Value table, P value table "),
                       # downloadButton('downloadperformance', 'Download Performance Measures'),
@@ -462,7 +513,7 @@ if (interactive()) {
              ))
 
 
-  )
+    )
   server <- function(input, output) {
 
 
@@ -504,6 +555,16 @@ if (interactive()) {
 
           j
         })
+
+
+      output$plot <- renderUI({
+        if (is.null(input$Table2) || input$Table2=="m")
+          return(NULL)
+        actionButton("plot",
+                     "Click for plot")
+      })
+
+
       output$factor <-
         #reactive input factore
         renderUI({
@@ -552,9 +613,10 @@ if (interactive()) {
           if (is.null(input$Table2) || input$Table2=="m")
             return(NULL)
           op <- data.frame(get((input$Table2)))
-          j <- data.frame(names(op))
-          colnames(j) <- "all"
-          j
+          dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
+          lvls<-data.frame(lapply(sapply(dfnum, unique), length))
+          lvls<-colnames(lvls[,which(lvls[1,]==2)])
+          lvls
         })
       output$all <-
         #reactive input all
@@ -878,9 +940,10 @@ if (interactive()) {
           if (is.null(input$Table266) || input$Table266=="m")
             return(NULL)
           op <- data.frame(get((input$Table266)))
-          j <- data.frame(names(op))
-          colnames(j) <- "all"
-          j
+          dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
+          lvls<-data.frame(lapply(sapply(dfnum, unique), length))
+          lvls<-colnames(lvls[,which(lvls[1,]==2)])
+          lvls
         })
       output$all266 <-
         #reactive input all
@@ -1436,6 +1499,27 @@ if (interactive()) {
       })
 
 
+      autocolmnstar<-reactive({
+        if (is.null(input$dev) || input$dev=="m")
+          return(NULL)
+        op <- data.frame(get((input$dev)))
+        dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
+
+        lvls<-data.frame(lapply(sapply(dfnum, unique), length))
+        lvls<-colnames(lvls[,which(lvls[1,]==2)])
+        lvls
+      })
+
+
+
+
+      output$ivv <-
+        renderUI({
+          if (is.null(input$dev) || input$dev=="m" )
+            return(NULL)
+          actionButton("ivv",
+                       "Get Information Value")
+        })
 
 
 
@@ -1453,11 +1537,13 @@ if (interactive()) {
         renderUI({
           selectInput(
             label = "Select Target Variable" ,
-            choices = colnam() ,
+            choices = autocolmnstar() ,
             selected = NULL,
             inputId = "Target"
           )
         })
+
+
 
 
       ivvtb<-reactive({
@@ -1505,11 +1591,23 @@ if (interactive()) {
         renderUI({
           selectInput(
             label = "Select Target Variable" ,
-            choices = colnam() ,
+            choices = autocolmnstar() ,
             selected = input$Target,
             inputId = "Targetp"
           )
         })
+
+      output$pv <-
+        renderUI({
+          if (is.null(input$dev) || input$dev=="m" )
+            return(NULL)
+          actionButton("pv", "Get p Value ")
+        })
+
+
+
+
+
 
       output$dev<-
         renderUI({
@@ -1600,6 +1698,14 @@ if (interactive()) {
           )
         })
 
+
+      output$vc <- renderUI({
+        if (is.null(input$dev) || input$dev=="m")
+          return(NULL)
+        actionButton("vc",
+                     "Get Graph")
+      })
+
       plotdata<-reactive({
 
         op <- data.frame(get((input$dev)))
@@ -1629,7 +1735,40 @@ if (interactive()) {
         plot(ppq)
       })
 
+      updatecmd<-reactive({
+        kp<-input$variableupdation
+        kp
+      })
 
+      typewdt<-eventReactive(input$updatevardev,{
+        updatecmd()
+      })
+
+
+      output$typed<-renderText({
+        typewdt()
+      })
+
+      observeEvent(input$updatevardev, {
+
+        # new_df_dev<<- sqldf(updatecmd())
+
+        eval(parse(text = typewdt()))
+
+      })
+
+      # observeEvent(input$updatevarval, {
+      #
+      #   new_df_val<<- sqldf(updatecmd())
+      #
+      # })
+      #
+      #
+      # observeEvent(input$updatevarhold, {
+      #
+      #   new_df_holdout<<- sqldf(updatecmd())
+      #
+      # })
 
       out_columnnames1 <-
         reactive({
@@ -1652,12 +1791,43 @@ if (interactive()) {
         ntext()
       })
 
+
+      output$getmodel <- renderUI({
+        if (is.null(input$dev) || input$dev=="m")
+          return(NULL)
+        actionButton("getmodel",
+                     "Create Model")
+      })
+
+      output$Rankord <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()))
+          return(NULL)
+        actionButton("Rankord",
+                     "Get Rank Ordering Table")
+      })
+
+
+      output$measure <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()))
+          return(NULL)
+        actionButton("measure","Get All measure")
+      })
+
+      output$concob <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()))
+          return(NULL)
+        actionButton("concob","Get Concordance")
+      })
+
+
+
       sumt<-eventReactive(input$getmodel, {
         kp<-paste0("MODEL SUMMARY")
       })
       output$Sum<-renderText({
         sumt()
       })
+
 
 
 
@@ -2114,6 +2284,30 @@ if (interactive()) {
       output$eqnused<-renderText({
         eqnusedt()
       })
+
+
+      output$validate <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m"  )
+          return(NULL)
+        actionButton("validate", "Validate the model ")
+      })
+
+
+      output$Rankordv <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m"  )
+          return(NULL)
+        actionButton("Rankordv","Get Rank Ordering Table")
+      })
+
+
+      output$Compr <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m"  )
+          return(NULL)
+        actionButton("Compr","Get Comparison")
+      })
+
+
+
 
       sumtv<-eventReactive(input$validate, {
         kp<-paste0("VALIDATION MODEL SUMMARY")
@@ -2578,6 +2772,34 @@ if (interactive()) {
       output$eqnused123<-renderText({
         eqnusedt()
       })
+
+      output$validateholdout <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m" || is.null(input$Holdout) || input$Holdout=="m"  )
+          return(NULL)
+        actionButton("validateholdout", "Validate the model ")
+      })
+
+
+      output$Rankordh <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m" || is.null(input$Holdout) || input$Holdout=="m"  )
+          return(NULL)
+        actionButton("Rankordh","Get Rank Ordering Table")
+      })
+
+      output$Comprvh <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m" || is.null(input$Holdout) || input$Holdout=="m"  )
+          return(NULL)
+        actionButton("Comprvh", "Get Comparison")
+      })
+
+      output$Comprconcvh <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m" || is.null(input$Holdout) || input$Holdout=="m"  )
+          return(NULL)
+        actionButton("Comprconcvh", "Get Comparison Concordance")
+      })
+
+
+
 
 
 
@@ -3481,20 +3703,25 @@ if (interactive()) {
 
 
 
-      docummnt1<-reactive({
+      documentation1<-reactive({
         pp<-input$documentation
         pp
       })
 
+      documentation<-reactiveValues()
+
+
+
+
       observe({
-        if(is.null(docummnt1()))
+        if(is.null(documentation1()))
           isolate(
             documentation <<- NULL
           )
 
-        if(!is.null(docummnt1()))
+        if(!is.null(documentation1()))
           isolate(
-            documentation <<- docummnt1()
+            documentation <<- documentation1()
           )
       })
 
@@ -3510,7 +3737,7 @@ if (interactive()) {
                 rank_order_validation, comparison_table,concordance_val,
                 beta_ratio_table_holdout, rank_order_holdout, comparison_table_holdout,concordance_holdout,documentation,
                 file = file)
-          #write.table(documentation,file="documentation.txt")
+          #write.table(docummnt,file="documentation.txt")
           #plotly_IMAGE(patientCircleInput(), format = "png", out_file = file)
         }
       )
