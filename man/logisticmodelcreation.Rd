@@ -26,3 +26,4 @@ logisticmodelcreation(m)
 \author{
 JIshnu
 }
+
