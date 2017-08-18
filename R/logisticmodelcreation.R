@@ -615,7 +615,8 @@ if (interactive()) {
           op <- data.frame(get((input$Table2)))
           dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
           lvls<-data.frame(lapply(sapply(dfnum, unique), length))
-          lvls<-colnames(lvls[,which(lvls[1,]==2)])
+          lvls<-colnames(lvls)
+                        # [,which(lvls[1,]==2)])
           lvls
         })
       output$all <-
@@ -942,7 +943,8 @@ if (interactive()) {
           op <- data.frame(get((input$Table266)))
           dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
           lvls<-data.frame(lapply(sapply(dfnum, unique), length))
-          lvls<-colnames(lvls[,which(lvls[1,]==2)])
+          lvls<-colnames(lvls)
+          #[,which(lvls[1,]==2)])
           lvls
         })
       output$all266 <-
@@ -1494,7 +1496,7 @@ if (interactive()) {
           return(NULL)
         op <- data.frame(get((input$dev)))
         lvls<-data.frame(lapply(sapply(op, levels), length))
-        lvls<-colnames(lvls[,which(lvls[1,]>=input$maxlvl)])
+        lvls<-colnames(lvls [,which(lvls[1,]>=input$maxlvl)])
         lvls
       })
 
@@ -1506,7 +1508,8 @@ if (interactive()) {
         dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
 
         lvls<-data.frame(lapply(sapply(dfnum, unique), length))
-        lvls<-colnames(lvls[,which(lvls[1,]==2)])
+        lvls<-colnames(lvls)
+        #[,which(lvls[1,]==2)])
         lvls
       })
 
@@ -2306,6 +2309,11 @@ if (interactive()) {
         actionButton("Compr","Get Comparison")
       })
 
+      output$Comprconc <- renderUI({
+        if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m"  )
+          return(NULL)
+        actionButton("Comprconc","Get Comparison Concordance")
+      })
 
 
 
@@ -2791,6 +2799,8 @@ if (interactive()) {
           return(NULL)
         actionButton("Comprvh", "Get Comparison")
       })
+
+
 
       output$Comprconcvh <- renderUI({
         if (is.null(input$dev) || input$dev=="m" || is.null(mylogit()) || is.null(input$val) || input$val=="m" || is.null(input$Holdout) || input$Holdout=="m"  )
