@@ -1,4 +1,4 @@
-Package: logisticmodelcretaion
+Package: logisticmodelcreation
 Title: Create dynamic logistic regression model. Please ensure the target variable is present and noted as 0 or 1.
 Version: 0.0.0.1000
 Authors@R: person("Jishnu", "S", email = "jishnu.s@k2analytics.co.in", role = c("aut", "cre"))
