@@ -111,7 +111,7 @@ if (interactive()) {
              fluidPage(
                titlePanel("Information Value"),
                column(
-                 4,
+                 3,
                  # selectInput(
                  #   label = "Select Development Dataframe",
                  #   choices = m$names.x...x....TRUE..,
@@ -122,6 +122,7 @@ if (interactive()) {
                  numericInput("maxlvl", "Max. Permissible Levels", 10, min = 1, max = 100),
                  uiOutput("ID"),
                  uiOutput("Target"),
+                 textOutput("binaryout"),
                  uiOutput("ivv")
                  #actionButton("ivv", "Get Information Value ")
                ),
@@ -224,8 +225,8 @@ if (interactive()) {
         column(2,
                uiOutput("IDpx"),
                uiOutput("vc")
-              # actionButton("vc", "Get Graph ")
-              ),
+               # actionButton("vc", "Get Graph ")
+        ),
 
         column(12,
                plotOutput("clusterplot"))
@@ -616,7 +617,7 @@ if (interactive()) {
           dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
           lvls<-data.frame(lapply(sapply(dfnum, unique), length))
           lvls<-colnames(lvls)
-                        # [,which(lvls[1,]==2)])
+          # [,which(lvls[1,]==2)])
           lvls
         })
       output$all <-
@@ -1506,10 +1507,10 @@ if (interactive()) {
           return(NULL)
         op <- data.frame(get((input$dev)))
         dfnum<-op[,lapply (op,class) %in% c("numeric","integer")]
+        dfnum$sample1233<-sample(0:1,nrow(dfnum),replace = T)
 
         lvls<-data.frame(lapply(sapply(dfnum, unique), length))
-        lvls<-colnames(lvls)
-        #[,which(lvls[1,]==2)])
+        lvls<-colnames(lvls[,which(lvls[1,]==2)])
         lvls
       })
 
@@ -1547,14 +1548,20 @@ if (interactive()) {
         })
 
 
-
+      output$binaryout<-renderText({
+        if (is.null(input$dev) || input$dev=="m" )
+          return(NULL)
+        KPP<-"If Target is not binary column it will not show. If you click the button without selecting
+        proper Target the app will close automatically"
+        KPP
+      })
 
       ivvtb<-reactive({
         op <- data.frame(get((input$dev)))
         id<-input$ID
         targ<-input$Target
 
-
+        row.names(op) <- 1:nrow(op)
         pp<-iv.mult(op[,!names(op) %in% c(id)],targ,TRUE)
         pp$InformationValue<-round(pp$InformationValue,2)
         pp
