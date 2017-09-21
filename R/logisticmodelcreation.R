@@ -723,8 +723,8 @@ if (interactive()) {
           RRate$cum_tot_pct = 100 * (RRate$cum_tot_pct)
           RRate$cum_resp_pct = 100 * (RRate$cum_resp_pct)
           RRate$cum_non_resp_pct = 100 * (RRate$cum_non_resp_pct)
-          RRate$ordered_range <-
-            factor(RRate$range, levels = RRate$range)
+          #RRate$ordered_range <-
+            #factor(RRate$range, levels = RRate$range)
           ## Output the RRate table to csv file
           ## you should ensure the setwd -  worxxing directory
           #write.csv(RRate, file = paste0(output_folder, var, ".csv"),
