@@ -715,7 +715,7 @@ if (interactive()) {
           RRate$cum_non_resp_pct <-
             round(RRate$cum_non_resp / sum(RRate$cnt_non_resp), 2)
 
-          RRate$xxs <-
+          RRate$ks <-
             abs(RRate$cum_resp_pct - RRate$cum_non_resp_pct)
 
 
