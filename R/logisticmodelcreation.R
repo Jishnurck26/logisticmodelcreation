@@ -1570,7 +1570,12 @@ if (interactive()) {
       })
 
       ntextivv <- eventReactive(input$ivv, {
-        ivvtb()
+        if ("iv.mult"%in%ls(getNamespace("woe") )){
+          ivvtb()
+        } else {
+          print("Please install woe package using 'install_github('riv','tomasgreif')'")
+        }
+
       })
 
       output$ivvalue<-DT::renderDataTable({
