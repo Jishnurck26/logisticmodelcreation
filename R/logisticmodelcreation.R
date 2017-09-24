@@ -1562,6 +1562,7 @@ if (interactive()) {
         targ<-input$Target
 
         row.names(op) <- 1:nrow(op)
+        require(woe)
         pp<-iv.mult(op[,!names(op) %in% c(id)],targ,TRUE)
         pp$InformationValue<-round(pp$InformationValue,2)
         pp
